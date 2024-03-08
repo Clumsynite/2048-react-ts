@@ -11,9 +11,9 @@ function App() {
 
   return (
     <main
-      className={`${darkMode ? "dark" : ""} max-w-screen min-h-screen text-foreground bg-background transition-all `}
+      className={`${darkMode ? "dark" : ""} max-w-screen min-h-screen text-foreground bg-background transition-all flex flex-col justify-center`}
     >
-      <div className="flex flex-row items-center p-4">
+      <div className="flex-[30] flex flex-row items-center p-4">
         <div className="flex-[1] flex flex-row justify-center">
           <div className="p-4 text-center font-bold text-5xl">2048</div>
           <Scores />
@@ -21,12 +21,14 @@ function App() {
         <ThemeSwitcher />
         <div className="w-24" />
       </div>
-      <div className="flex flex-row justify-center">
-        <NewGame />
-      </div>
-      <Board />
-      <div className="pt-2">
-        <HowToPlay />
+      <div className="flex-[70]">
+        <div className="flex flex-row justify-center">
+          <NewGame />
+        </div>
+        <Board />
+        <div className="pt-2">
+          <HowToPlay />
+        </div>
       </div>
     </main>
   );
