@@ -40,8 +40,8 @@ const Tile = ({ x, y, value }: Tile) => {
   return (
     <div
       title={`Position: ${x}, ${y} | Value: ${value}`}
-      className={`h-36 w-36 m-1 border-gray-300 border flex flex-col items-center justify-center
-      text-white text-5xl font-bold bg-[${value ? colors[String(value) as keyof typeof colors] : colors.null}]
+      className={`h-28 w-28 m-1 border-gray-300 border flex flex-col items-center justify-center
+      text-white text-3xl font-bold bg-[${value ? colors[String(value) as keyof typeof colors] : colors.null}]
       `}
       style={{ backgroundColor: value ? colors[String(value) as keyof typeof colors] : colors.null }}
     >

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import lo from "lodash";
-import { Tile as TileType, Tiles } from "../../@types/Tiles";
-import { addRandomTile, initialiseTiles, orderTiles } from "../../helper/tiles";
+import { Tiles, dir } from "../../@types/Tiles";
+import { initialiseTiles, moveTiles } from "../../helper/tiles";
 import Tile from "./Tile";
 
 const Board = () => {
@@ -13,154 +12,15 @@ const Board = () => {
     _setTiles(data);
   };
 
-  const moveTiles = (dir: "up" | "down" | "left" | "right", tiles: Tiles) => {
-    if (dir === "up") {
-      const clonedTiles = lo.cloneDeep(tiles);
-      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["desc", "asc"]);
-
-      const grouped = lo.groupBy(lo.cloneDeep(ordered), "x");
-      let cells: Tiles = [];
-      for (let x = 1; x <= 4; x++) {
-        let next, cell, ignore;
-        const col = grouped[x] as Tiles;
-        for (let i = 0; i < 4; i++) {
-          cell = col[i] as TileType;
-          next = lo.cloneDeep(col[i + 1]);
-
-          if (!next) continue;
-          if (ignore) {
-            ignore = false;
-            continue;
-          }
-
-          if (next.value && cell.value === next.value) {
-            col[i + 1].value = cell.value + cell.value;
-            cell.value = null;
-            ignore = true;
-          } else if (next.value === null && cell.value) {
-            col[i + 1].value = cell.value;
-            cell.value = null;
-            ignore = true;
-          }
-        }
-
-        cells = [...cells, ...col];
-      }
-      cells = orderTiles(addRandomTile(cells));
-      setTiles([...lo.cloneDeep(cells)]);
-    }
-    if (dir === "down") {
-      const clonedTiles = lo.cloneDeep(tiles);
-      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "asc"]);
-
-      const grouped = lo.groupBy(lo.cloneDeep(ordered), "x");
-      let cells: Tiles = [];
-      for (let x = 1; x <= 4; x++) {
-        let next, cell, ignore;
-        const col = grouped[x] as Tiles;
-        for (let i = 0; i < 4; i++) {
-          cell = col[i] as TileType;
-          next = lo.cloneDeep(col[i + 1]);
-
-          if (!next) continue;
-          if (ignore) {
-            ignore = false;
-            continue;
-          }
-
-          if (next.value && cell.value === next.value) {
-            col[i + 1].value = cell.value + cell.value;
-            cell.value = null;
-            ignore = true;
-          } else if (next.value === null && cell.value) {
-            col[i + 1].value = cell.value;
-            cell.value = null;
-            ignore = true;
-          }
-        }
-
-        cells = [...cells, ...col];
-      }
-      cells = orderTiles(addRandomTile(cells));
-      setTiles([...lo.cloneDeep(cells)]);
-    }
-    if (dir === "left") {
-      const clonedTiles = lo.cloneDeep(tiles);
-      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "desc"]);
-
-      const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
-      let cells: Tiles = [];
-      for (let x = 1; x <= 4; x++) {
-        let next, cell, ignore;
-        const col = grouped[x] as Tiles;
-        for (let i = 0; i < 4; i++) {
-          cell = col[i] as TileType;
-          next = lo.cloneDeep(col[i + 1]);
-
-          if (!next) continue;
-          if (ignore) {
-            ignore = false;
-            continue;
-          }
-
-          if (next.value && cell.value === next.value) {
-            col[i + 1].value = cell.value + cell.value;
-            cell.value = null;
-            ignore = true;
-          } else if (next.value === null && cell.value) {
-            col[i + 1].value = cell.value;
-            cell.value = null;
-            ignore = true;
-          }
-        }
-
-        cells = [...cells, ...col];
-      }
-      cells = orderTiles(addRandomTile(cells));
-      setTiles([...lo.cloneDeep(cells)]);
-    }
-    if (dir === "right") {
-      const clonedTiles = lo.cloneDeep(tiles);
-      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "asc"]);
-
-      const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
-      let cells: Tiles = [];
-      for (let x = 1; x <= 4; x++) {
-        let next, cell, ignore;
-        const col = grouped[x] as Tiles;
-        for (let i = 0; i < 4; i++) {
-          cell = col[i] as TileType;
-          next = lo.cloneDeep(col[i + 1]);
-
-          if (!next) continue;
-          if (ignore) {
-            ignore = false;
-            continue;
-          }
-
-          if (next.value && cell.value === next.value) {
-            col[i + 1].value = cell.value + cell.value;
-            cell.value = null;
-            ignore = true;
-          } else if (next.value === null && cell.value) {
-            col[i + 1].value = cell.value;
-            cell.value = null;
-            ignore = true;
-          }
-        }
-
-        cells = [...cells, ...col];
-      }
-      cells = orderTiles(addRandomTile(cells));
-      setTiles([...lo.cloneDeep(cells)]);
-    }
-  };
-
   const handleKeyDown = ({ key }: KeyboardEvent) => {
-    if (["w", "arrowup"].includes(key.toLowerCase())) moveTiles("up", tilesRef.current);
-    if (["s", "arrowdown"].includes(key.toLowerCase())) moveTiles("down", tilesRef.current);
-    if (["a", "arrowleft"].includes(key.toLowerCase())) moveTiles("left", tilesRef.current);
-    if (["d", "arrowright"].includes(key.toLowerCase())) moveTiles("right", tilesRef.current);
+    let dir;
+
+    if (["w", "arrowup"].includes(key.toLowerCase())) dir = "up";
+    else if (["s", "arrowdown"].includes(key.toLowerCase())) dir = "down";
+    else if (["a", "arrowleft"].includes(key.toLowerCase())) dir = "left";
+    else if (["d", "arrowright"].includes(key.toLowerCase())) dir = "right";
+
+    if (dir) setTiles([...moveTiles(dir as dir, tilesRef.current)]);
   };
 
   useEffect(() => {

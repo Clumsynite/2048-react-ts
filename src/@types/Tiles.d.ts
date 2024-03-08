@@ -7,4 +7,6 @@ interface Tile {
 
 type Tiles = Tile[];
 
-export { Tile, Tiles };
+type dir = "up" | "down" | "left" | "right";
+
+export { Tile, Tiles, dir };
