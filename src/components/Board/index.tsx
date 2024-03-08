@@ -34,7 +34,7 @@ const Board = () => {
           }
 
           if (next.value && cell.value === next.value) {
-            col[i + 1].value = cell.value * cell.value;
+            col[i + 1].value = cell.value + cell.value;
             cell.value = null;
             ignore = true;
           } else if (next.value === null && cell.value) {
