@@ -1,19 +1,21 @@
 import type { Tile } from "../../@types/Tiles";
+import { useAppSelector } from "src/hooks";
+import { isDarkMode } from "src/reducers/darkMode";
 
-// const colorsLight = {
-//   null: "#CDC1B4",
-//   "2": "#EEE4DA",
-//   "4": "#EDE0C8",
-//   "8": "#F2B179",
-//   "16": "#F59563",
-//   "32": "#F67C5F",
-//   "64": "#F65E3B",
-//   "128": "#EDCF72",
-//   "256": "#EDCC61",
-//   "512": "#EDC850",
-//   "1024": "#EDC53F",
-//   "2048": "#EDC22E",
-// };
+const colorsLight = {
+  null: "#CDC1B4",
+  "2": "#EEE4DA",
+  "4": "#EDE0C8",
+  "8": "#F2B179",
+  "16": "#F59563",
+  "32": "#F67C5F",
+  "64": "#F65E3B",
+  "128": "#EDCF72",
+  "256": "#EDCC61",
+  "512": "#EDC850",
+  "1024": "#EDC53F",
+  "2048": "#EDC22E",
+};
 
 const colorsDark = {
   null: "#483C32",
@@ -30,8 +32,11 @@ const colorsDark = {
   "2048": "#C5C22F",
 };
 
-const colors = colorsDark;
 const Tile = ({ x, y, value }: Tile) => {
+  const darkMode = useAppSelector(isDarkMode);
+
+  const colors = darkMode ? colorsDark : colorsLight;
+
   return (
     <div
       title={`Position: ${x}, ${y} | Value: ${value}`}
