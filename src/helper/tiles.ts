@@ -36,13 +36,13 @@ export const isBoardEmpty = (tiles: Tiles) => {
 export const moveTiles = (dir: dir, tiles: Tiles) => {
   const clonedTiles = lo.cloneDeep(tiles);
   let cells: Tiles = [];
-
+  let score = 0;
   if (dir === "up") {
     const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["desc", "asc"]);
 
     const grouped = lo.groupBy(lo.cloneDeep(ordered), "x");
     for (let x = 1; x <= 4; x++) {
-      let next, cell, ignore;
+      let next, cell, ignore, newValue;
       const col = grouped[x] as Tiles;
       for (let i = 0; i < 4; i++) {
         cell = col[i] as Tile;
@@ -55,7 +55,9 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
         }
 
         if (next.value && cell.value === next.value) {
-          col[i + 1].value = cell.value + cell.value;
+          newValue = cell.value + cell.value;
+          col[i + 1].value = newValue;
+          score += newValue;
           cell.value = null;
           ignore = true;
         } else if (next.value === null && cell.value) {
@@ -73,7 +75,7 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
 
     const grouped = lo.groupBy(lo.cloneDeep(ordered), "x");
     for (let x = 1; x <= 4; x++) {
-      let next, cell, ignore;
+      let next, cell, ignore, newValue;
       const col = grouped[x] as Tiles;
       for (let i = 0; i < 4; i++) {
         cell = col[i] as Tile;
@@ -86,7 +88,9 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
         }
 
         if (next.value && cell.value === next.value) {
-          col[i + 1].value = cell.value + cell.value;
+          newValue = cell.value + cell.value;
+          col[i + 1].value = newValue;
+          score += newValue;
           cell.value = null;
           ignore = true;
         } else if (next.value === null && cell.value) {
@@ -104,7 +108,7 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
 
     const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
     for (let x = 1; x <= 4; x++) {
-      let next, cell, ignore;
+      let next, cell, ignore, newValue;
       const col = grouped[x] as Tiles;
       for (let i = 0; i < 4; i++) {
         cell = col[i] as Tile;
@@ -117,7 +121,9 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
         }
 
         if (next.value && cell.value === next.value) {
-          col[i + 1].value = cell.value + cell.value;
+          newValue = cell.value + cell.value;
+          col[i + 1].value = newValue;
+          score += newValue;
           cell.value = null;
           ignore = true;
         } else if (next.value === null && cell.value) {
@@ -135,7 +141,7 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
 
     const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
     for (let x = 1; x <= 4; x++) {
-      let next, cell, ignore;
+      let next, cell, ignore, newValue;
       const col = grouped[x] as Tiles;
       for (let i = 0; i < 4; i++) {
         cell = col[i] as Tile;
@@ -148,7 +154,9 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
         }
 
         if (next.value && cell.value === next.value) {
-          col[i + 1].value = cell.value + cell.value;
+          newValue = cell.value + cell.value;
+          col[i + 1].value = newValue;
+          score += newValue;
           cell.value = null;
           ignore = true;
         } else if (next.value === null && cell.value) {
@@ -162,7 +170,7 @@ export const moveTiles = (dir: dir, tiles: Tiles) => {
     }
   }
   cells = orderTiles(addRandomTile(cells));
-  return lo.cloneDeep(cells);
+  return { tiles: cells, score };
 };
 
 // const getRandomCell = () => {};

@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { darkMode as darkModeReducer } from "./reducers";
+import { darkMode as darkModeReducer, score as scoreReducer } from "./reducers";
 
 const store = configureStore({
   reducer: {
     darkMode: darkModeReducer,
+    score: scoreReducer,
   },
 });
 

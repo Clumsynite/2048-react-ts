@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Tiles, dir } from "../../@types/Tiles";
 import { initialiseTiles, moveTiles } from "../../helper/tiles";
 import Tile from "./Tile";
+import { useAppDispatch, useAppSelector } from "src/hooks";
+import { setBestScore, addCurrentScore } from "src/reducers/score";
 
 const Board = () => {
   const [tiles, _setTiles] = useState<Tiles>([]);
@@ -12,6 +14,14 @@ const Board = () => {
     _setTiles(data);
   };
 
+  const scores = useAppSelector((state) => state.score);
+  const scoresRef = useRef(scores);
+  useEffect(() => {
+    scoresRef.current = scores;
+  }, [scores]);
+
+  const dispatch = useAppDispatch();
+
   const handleKeyDown = ({ key }: KeyboardEvent) => {
     let dir;
 
@@ -20,7 +30,13 @@ const Board = () => {
     else if (["a", "arrowleft"].includes(key.toLowerCase())) dir = "left";
     else if (["d", "arrowright"].includes(key.toLowerCase())) dir = "right";
 
-    if (dir) setTiles([...moveTiles(dir as dir, tilesRef.current)]);
+    if (dir) {
+      const { tiles, score } = moveTiles(dir as dir, tilesRef.current);
+      setTiles([...tiles]);
+      const newScore = scoresRef.current.current + score;
+      dispatch(addCurrentScore(score));
+      if (scoresRef.current.best < newScore) dispatch(setBestScore(newScore));
+    }
   };
 
   useEffect(() => {
