@@ -1,26 +1,26 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export interface DarkModeState {
+export interface ScoreState {
   current: number;
   best: number;
 }
 
 const localScore = localStorage.getItem("score");
 
-const initialState: DarkModeState = localScore
+const initialState: ScoreState = localScore
   ? JSON.parse(localScore)
   : {
       current: 0,
       best: 0,
     };
 
-export const darkModeSlice = createSlice({
+export const scoreSlice = createSlice({
   name: "score",
   initialState,
   reducers: {
     addCurrentScore: (state, action: PayloadAction<number>) => {
       state.current += action.payload;
-      localStorage.setItem("score", JSON.stringify({ ...state, current: 0 }));
+      localStorage.setItem("score", JSON.stringify(state));
     },
     setBestScore: (state, action: PayloadAction<number>) => {
       state.best = action.payload;
@@ -29,6 +29,6 @@ export const darkModeSlice = createSlice({
   },
 });
 
-export const { addCurrentScore, setBestScore } = darkModeSlice.actions;
+export const { addCurrentScore, setBestScore } = scoreSlice.actions;
 
-export default darkModeSlice.reducer;
+export default scoreSlice.reducer;

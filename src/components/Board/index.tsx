@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import { Tiles, dir } from "../../@types/Tiles";
-import { initialiseTiles, moveTiles } from "../../helper/tiles";
+import { useEffect, useRef } from "react";
+import { dir } from "../../@types/Tiles";
+import { moveTiles } from "../../helper/tiles";
 import Tile from "./Tile";
 import { useAppDispatch, useAppSelector } from "src/hooks";
 import { setBestScore, addCurrentScore } from "src/reducers/score";
+import { setTiles } from "src/reducers/tiles";
 
 const Board = () => {
-  const [tiles, _setTiles] = useState<Tiles>([]);
+  const tiles = useAppSelector((state) => state.tiles.value);
   const tilesRef = useRef(tiles);
-
-  const setTiles = (data: Tiles) => {
-    tilesRef.current = data;
-    _setTiles(data);
-  };
+  useEffect(() => {
+    tilesRef.current = tiles;
+  }, [tiles]);
 
   const scores = useAppSelector((state) => state.score);
   const scoresRef = useRef(scores);
@@ -32,7 +31,7 @@ const Board = () => {
 
     if (dir) {
       const { tiles, score } = moveTiles(dir as dir, tilesRef.current);
-      setTiles([...tiles]);
+      dispatch(setTiles([...tiles]));
       const newScore = scoresRef.current.current + score;
       dispatch(addCurrentScore(score));
       if (scoresRef.current.best < newScore) dispatch(setBestScore(newScore));
@@ -40,8 +39,6 @@ const Board = () => {
   };
 
   useEffect(() => {
-    if (tiles.length === 0) setTiles([...initialiseTiles()]);
-
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
