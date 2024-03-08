@@ -26,9 +26,13 @@ export const scoreSlice = createSlice({
       state.best = action.payload;
       localStorage.setItem("score", JSON.stringify(state));
     },
+    resetCurrentScore: (state) => {
+      state.current = 0;
+      localStorage.setItem("score", JSON.stringify(state));
+    },
   },
 });
 
-export const { addCurrentScore, setBestScore } = scoreSlice.actions;
+export const { addCurrentScore, setBestScore, resetCurrentScore } = scoreSlice.actions;
 
 export default scoreSlice.reducer;

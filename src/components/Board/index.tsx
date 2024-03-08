@@ -44,7 +44,7 @@ const Board = () => {
   }, []);
 
   return (
-    <div className="flex flex-row justify-center items-center mt-12">
+    <div className="flex flex-row justify-center items-center mt-6">
       <div className="border-2 border-gray-400 flex flex-row">
         {Array.from({ length: 4 }, (_, i) => i).map((x) => (
           <div key={x} className="flex flex-col">

@@ -22,9 +22,13 @@ export const tilesSlice = createSlice({
       state.value = action.payload;
       localStorage.setItem("tiles", JSON.stringify(state));
     },
+    resetTiles: (state) => {
+      state.value = initialiseTiles();
+      localStorage.setItem("tiles", JSON.stringify(state));
+    },
   },
 });
 
-export const { setTiles } = tilesSlice.actions;
+export const { setTiles, resetTiles } = tilesSlice.actions;
 
 export default tilesSlice.reducer;
