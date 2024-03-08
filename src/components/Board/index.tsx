@@ -50,10 +50,109 @@ const Board = () => {
       setTiles([...lo.cloneDeep(cells)]);
     }
     if (dir === "down") {
+      const clonedTiles = lo.cloneDeep(tiles);
+      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "asc"]);
+
+      const grouped = lo.groupBy(lo.cloneDeep(ordered), "x");
+      let cells: Tiles = [];
+      for (let x = 1; x <= 4; x++) {
+        let next, cell, ignore;
+        const col = grouped[x] as Tiles;
+        for (let i = 0; i < 4; i++) {
+          cell = col[i] as TileType;
+          next = lo.cloneDeep(col[i + 1]);
+
+          if (!next) continue;
+          if (ignore) {
+            ignore = false;
+            continue;
+          }
+
+          if (next.value && cell.value === next.value) {
+            col[i + 1].value = cell.value + cell.value;
+            cell.value = null;
+            ignore = true;
+          } else if (next.value === null && cell.value) {
+            col[i + 1].value = cell.value;
+            cell.value = null;
+            ignore = true;
+          }
+        }
+
+        cells = [...cells, ...col];
+      }
+      cells = orderTiles(addRandomTile(cells));
+      setTiles([...lo.cloneDeep(cells)]);
     }
     if (dir === "left") {
+      const clonedTiles = lo.cloneDeep(tiles);
+      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "desc"]);
+
+      const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
+      let cells: Tiles = [];
+      for (let x = 1; x <= 4; x++) {
+        let next, cell, ignore;
+        const col = grouped[x] as Tiles;
+        for (let i = 0; i < 4; i++) {
+          cell = col[i] as TileType;
+          next = lo.cloneDeep(col[i + 1]);
+
+          if (!next) continue;
+          if (ignore) {
+            ignore = false;
+            continue;
+          }
+
+          if (next.value && cell.value === next.value) {
+            col[i + 1].value = cell.value + cell.value;
+            cell.value = null;
+            ignore = true;
+          } else if (next.value === null && cell.value) {
+            col[i + 1].value = cell.value;
+            cell.value = null;
+            ignore = true;
+          }
+        }
+
+        cells = [...cells, ...col];
+      }
+      cells = orderTiles(addRandomTile(cells));
+      setTiles([...lo.cloneDeep(cells)]);
     }
     if (dir === "right") {
+      const clonedTiles = lo.cloneDeep(tiles);
+      const ordered = lo.orderBy(clonedTiles, ["y", "x"], ["asc", "asc"]);
+
+      const grouped = lo.groupBy(lo.cloneDeep(ordered), "y");
+      let cells: Tiles = [];
+      for (let x = 1; x <= 4; x++) {
+        let next, cell, ignore;
+        const col = grouped[x] as Tiles;
+        for (let i = 0; i < 4; i++) {
+          cell = col[i] as TileType;
+          next = lo.cloneDeep(col[i + 1]);
+
+          if (!next) continue;
+          if (ignore) {
+            ignore = false;
+            continue;
+          }
+
+          if (next.value && cell.value === next.value) {
+            col[i + 1].value = cell.value + cell.value;
+            cell.value = null;
+            ignore = true;
+          } else if (next.value === null && cell.value) {
+            col[i + 1].value = cell.value;
+            cell.value = null;
+            ignore = true;
+          }
+        }
+
+        cells = [...cells, ...col];
+      }
+      cells = orderTiles(addRandomTile(cells));
+      setTiles([...lo.cloneDeep(cells)]);
     }
   };
 
